@@ -15,3 +15,24 @@ where date = '2023-04-02'
 group by carNumber
 order by average_position asc
 ```
+
+```sql average_lap_results
+select 
+    lap_data.lap,
+    lap_data.milliseconds,
+    avg_time.average_finish_time
+from 
+    src_lap_times as lap_data
+join 
+    (select 
+         lap,
+         avg(milliseconds) as average_finish_time
+     from 
+         src_lap_times
+     where 
+         date = '2023-04-02'
+     group by lap) as avg_time on lap_data.lap = avg_time.lap
+where 
+    lap_data.date = '2023-04-02' and lap_data.carNumber = 44;
+```
+<LineChart data={average_lap_results} x=lap y={["milliseconds", "average_finish_time"]} />
