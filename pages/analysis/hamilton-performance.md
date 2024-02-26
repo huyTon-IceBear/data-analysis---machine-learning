@@ -97,9 +97,12 @@ Here are the charts depicting the lap time and sector time trends:
 </LineChart>
 
 2. How are the results per session during the weekend?
+
+
+## Results Per session
 To comprehensively evaluate the performance across different sessions during the weekend, we'll delve into Lewis Hamilton's lap times recorded in each practice round, qualifying session, and race session.
 
-## Practice Sessions
+### Practice Sessions 
 To gauge the driver's performance during the practice sessions, we study the lap times recorded by Lewis Hamilton. The lap times for the practice sessions, along with their average, are as follows:
 
 ```sql practice_lap_time_result
@@ -144,7 +147,7 @@ The line chart below visualizes Lewis Hamilton's lap times throughout the practi
     <ReferenceLine y={avg_practice_lap_time_result_ms[0].avg_lap_time} label="Average Time in ms"/>
 </LineChart>
 
-## Qualifying Sessions:
+### Qualifying Sessions:
 To assess the driver's performance during the qualifying sessions, we analyze Lewis Hamilton's lap times. The lap times for the qualifying sessions, along with their average, are as follows:
 
 ```sql qualify_lap_time_result
@@ -191,7 +194,7 @@ The line chart below visualizes Lewis Hamilton's lap times throughout the qualif
     <ReferenceLine y={avg_qualify_lap_time_result_ms[0].avg_lap_time} label="Average Time in ms"/>
 </LineChart>
 
-## Race Session:
+### Race Session:
 To complete the assessment of Lewis Hamilton's performance during the weekend, we inspect the lap times recorded during the race session. The lap times for the race session, along with their average, are as follows:
 
 ```sql race_lap_time_result
@@ -320,40 +323,79 @@ The scatter plots and histograms of pit in and pit out times provide valuable in
 In summary, the analysis suggests that the driver and team demonstrate consistency in pit stop execution, although there may be occasional deviations that warrant further investigation to optimize pit stop performance.
 
 4. How does the position of the driver change during the race?
+## Race Position
+To analyze how the position of the driver changes during the race, we'll examine the lap-wise position data. Here are the insights derived from the data:
 ```sql position_results
 select lap, position
 from src_lap_times
 where date = '2023-04-02' and carNumber = 44
 ```
-
-Line chart: Plot the positions of the driver over time (laps) to visualize the changes in position throughout the race.
-<LineChart data={position_results} x=lap y=position />
-
-Bar chart: Show the distribution of positions over time to understand the frequency of position changes.
-<BarChart  data={position_results} x=lap y=position />
-
 ```sql average_position
 select avg(position) as avg_position from ${position_results}
 ```
 
-The position of the racer seems good and in the lead with mostly stay at the 2nd position and some laps even get to 1st position. The {fmt(average_position[0].avg_position,'#,##0.0')} is relative high which show that the driver very persistent with the 2nd place in the race.
+### Line Chart Analysis:
+The line chart visualizes the driver's position changes over the race, offering insights into performance dynamics:
+- Shape & Trend: The jagged line reflects fluctuations in position, signifying the driver's battle for position against competitors and strategic adjustments made during the race.
+- Data Representation: Each point on the chart corresponds to a specific lap, providing a clear depiction of the driver's evolving position throughout the race.
+- Graph Suggestion: Peaks and valleys in the line reveal key moments of advancement or regression, shedding light on strategic decision-making and race execution.
+<LineChart data={position_results} x=lap y=position />
+
+### Bar Chart Analysis:
+The bar chart further illustrates position changes, emphasizing the frequency and magnitude of shifts:
+- Shape & Data Representation: Taller bars indicate significant position changes, allowing for detailed examination of laps with notable advancements or regressions.
+- Graph Suggestion: Analysis of bar distribution highlights laps with heightened competition or strategic maneuvers, providing context to race dynamics.
+<BarChart  data={position_results} x=lap y=position />
+
+### Key Race Moments
+- Lead Change: Hamilton took over the lead on lap 7, showcasing a strategic move to secure the front position.
+- Position Loss: However, the lead was lost on lap 12, indicating a challenging moment where the driver faced competition or encountered race conditions that affected their position.
+
+### Conclusion:
+The analysis reveals dynamic shifts in the driver's position throughout the race, with notable moments of leading and subsequent position changes. While the driver predominantly maintained a 2nd place position, occasional advancements to 1st position underscore strategic competitiveness. The average position of {fmt(average_position[0].avg_position,'#,##0.0')} reflects consistent performance in holding the 2nd place position. Overall, the driver's adept positioning and strategic maneuvers contributed to a solid race performance.
 
 5. Has the maximum speed been improved during the weekend?
+## Analysis Maximum Speed
+To assess whether there has been an improvement in the driver's maximum speed during the race weekend, we analyzed the speed data recorded. Here are the key findings from the analysis:
 
 ```sql speed_result
 select 
-    ROW_NUMBER() over () as index, RPM, Speed
+    ROW_NUMBER() over () as index, Speed
 from 
     src_car_data
 where 
     filename like '%data\\20230402%' and DriverNumber = 44 and Speed <> 0
 ```
-Line chart: Display the speed of the driver over time to identify any trends or improvements in maximum speed.
+### Data Statistics:
+- Range: 1 to 325
+- Mean: 192.43 km/h
+- Standard Deviation: 77.68 km/h
+- Percentiles: 25% - 128 km/h, 50% (Median) - 202 km/h, 75% - 262 km/h
+
+### Line Chart Analysis:
+The line chart tracks the driver's speed over time (laps), providing insights into any trends or improvements in maximum speed. Upon careful observation, it's evident that the chart didn't display a clear upward trend, indicating a lack of significant improvement in maximum speed.
+
 <LineChart data={speed_result} x=index y=Speed />
 
-Histogram: Show the distribution of speed measurements to understand the range and variability of speeds recorded during the weekend.
+Observations from the Line Chart:
+- Peak in the Middle: Notably, the maximum data point seems to be concentrated around the middle of the dataset, suggesting a potential recording of the highest speed during a practice or qualifying session rather than the race itself.
+- Consistency during the Race: The speed data during the race appeared more even and consistent compared to other sessions, indicating a steady performance during the actual competition.
+- Abnormal Results: However, there are some abnormal speed measurements, possibly due to hot restarts of the race or other external factors impacting the driver's performance.
+
+### Histogram Chart Analysis:
+The histogram offers a visual representation of the distribution of speed measurements, shedding light on the range and variability of speeds recorded throughout the weekend. The distribution appeared unimodal with right skewness, indicating a common speed occurring most frequently, with a few unusually high speed measurements pulling the mean to the right.
+
 <Histogram 
     data={speed_result} 
     x=Speed 
     xAxisTitle="Speed in km/h"
 />
+
+Key Observations from the Histogram:
+- Unimodal Distribution: The histogram displayed one peak, indicating a common speed occurring most frequently.
+- Right Skewness: The skewness to the right suggests a few exceptionally high speed measurements pulling the mean to the right.
+- Clustered Measurements: Most speed measurements clustered around the peak, with fewer extremes on either side.
+- No Significant Outliers: There were no notable outliers in the data, indicating overall consistency in speed measurements.
+
+### Conclusion:
+While our analysis provided valuable insights into the driver's speed performance, there wasn't clear evidence of a substantial improvement in maximum speed during the race weekend. The absence of a distinct upward trend in the line chart and the consistent distribution of speed measurements in the histogram suggest that further investigation or contextual understanding may be required to ascertain any significant changes in maximum speed. Additionally, the presence of abnormal speed results underscores the influence of external factors on the driver's performance.
