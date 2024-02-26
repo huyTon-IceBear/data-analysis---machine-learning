@@ -1,6 +1,9 @@
 # Hamilton Performance
+To address the query:
 
-To address the query "How did one of our drivers perform last weekend?", we'll focus on the performance of **Lewis Hamilton**.
+"How did one of our drivers perform last weekend?"
+
+we'll focus on the performance of **Lewis Hamilton**.
 
 Driver Details:
 - Name: Lewis Hamilton
@@ -37,7 +40,6 @@ select
 from 
     (
     select 
-        LapNumber,
         CAST(LapTime[7:] as time) as LapTime, 
         CAST(Sector1Time[7:] as time) as Sector1Time,
         CAST(Sector2Time[7:] as time) as Sector2Time,
@@ -64,9 +66,9 @@ from
 Analyzing the lap time data in detail, it becomes evident that the driver's performance evolves over the course of the weekend. Here's a breakdown:
 
 - Practice Session:
-    Initially, during the early races (around 30 laps), the driver seems to be acclimatizing to the vehicle, resulting in varying lap times. This phase typically involves adjustments and familiarization with the track and vehicle dynamics.
+    Initially, during the early laps (around 30 laps), the driver seems to be acclimatizing to the vehicle, resulting in varying lap times. This phase typically involves adjustments and familiarization with the track and vehicle dynamics.
 - Stable Performance:
-    Subsequently, from approximately races 40 to 80, the driver demonstrates a stable performance, with lap times consistently below the average. This indicates that the driver has adapted well to the track conditions and optimized their driving techniques, resulting in improved performance.
+    Subsequently, from approximately laps 40 to 80, the driver demonstrates a stable performance, with lap times consistently below the average. This indicates that the driver has adapted well to the track conditions and optimized their driving techniques, resulting in improved performance.
 - Final Race Session:
     - Remarkably, during the final race session, the driver delivers an exceptional performance, with most lap times consistently below the average. However, there are a few instances where the lap times deviate from the average, which could be attributed to unforeseen factors such as track conditions or strategic decisions during the race.
     - It's worth noting that anomalies in data, particularly during the final rounds, may occur due to hot restart moments or other race incidents, which could affect the consistency of lap times.
@@ -366,7 +368,7 @@ from
 where 
     filename like '%data\\20230402%' and DriverNumber = 44 and Speed <> 0
 ```
-### Data Statistics:
+### Speed Data Statistics:
 - Range: 1 to 325
 - Mean: 192.43 km/h
 - Standard Deviation: 77.68 km/h
