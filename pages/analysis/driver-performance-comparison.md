@@ -98,15 +98,56 @@ The line chart below illustrates the average sector times of Lewis Hamilton and 
 />
 
 ### Conclusion:
-- Sector 1: Both drivers have comparable performance in Sector 1, with Hamilton averaging slightly faster times than Russell.
+- Sector 1: Both drivers have comparable performance in Sector 1, with Russell averaging slightly faster times than Hamilton.
 - Sector 2: Russell demonstrates marginally faster performance in Sector 2 compared to Hamilton.
 - Sector 3: Hamilton showcases slightly faster times in Sector 3 compared to Russell.
 
-Overall, while there are some variations in sector performance between the two drivers, the differences are relatively minor. Both Hamilton and Russell exhibit competitive sector times, with Hamilton holding a slight edge in Sector 1 and Sector 3, while Russell performs slightly better in Sector 2.
+Overall, while there are some variations in sector performance between the two drivers, the differences are relatively minor. Both Hamilton and Russell exhibit competitive sector times, with Hamilton holding a slight edge in Sector 3, while Russell performs slightly better in Sector 1 and Sector 2.
 
 2. Which driver does the most overtakes?
+## Overtake Analysis
+To determine which driver executed the most overtakes during the race, we analyzed the lap position data for both Lewis Hamilton and George Russell. Here are the lap position data for each driver:
+
+Lewis Hamilton (Car Number 44):
+```sql hamilton_position
+select lap, position from 
+    src_lap_times
+where 
+    date = '2023-04-02' and carNumber = 44
+```
+George Russell (Car Number 63):
+```sql russell_position
+select lap, position from 
+    src_lap_times
+where 
+    date = '2023-04-02' and carNumber = 63
+```
+### Analysis:
+We represented the lap positions of both drivers throughout the race using line charts. In these visualizations, the x-axis denotes the lap number, while the y-axis indicates the position on the track.
+
+Upon reviewing the lap position data:
+
+- Hamilton's Line Chart: Hamilton's line illustrates his race performance, showing how his position fluctuated over each lap. Consistently high positions, such as positions 1 or 2, indicate periods when Hamilton was leading or closely following the race leader.
+<LineChart 
+    data={hamilton_position}
+    x="lap" 
+    y="position"
+/>
+
+- Russell's Line Chart: George Russell's line graph illustrates his race progression, highlighting his initial lead for the first seven laps of the race, followed by notable declines in position, each succeeded by recoveries. Notably, he dropped to 15th position at lap 17due to a Power Unit failure, which forced him to retire on lap 18, triggering a virtual safety car.
+<LineChart 
+    data={russell_position}
+    x="lap" 
+    y="position"
+/>
+
+### Conclusion:
+Examining the lap position data, it's evident that George Russell executed more overtakes compared to Lewis Hamilton. Russell's varied positions throughout the race, including regaining positions lost due to the Power Unit failure. Therefore, George Russell is considered to have executed the most overtakes among the two drivers.
+
 3. Which driver scores the most points?
+
 4. Which driver is better during qualification, and which is better during the race?
+
 5. Which driver improves best from `free practice 1` till the race?
 
 ```sql avarage_position
