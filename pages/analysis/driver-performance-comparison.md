@@ -4,15 +4,16 @@ To address the query:
 
 "What is the difference in performance between the two drives in our team?"
 
-Regarding the difference in performance between the two drivers in Mercedes team, Lewis Hamilton (car number 44) and George Russell (car number 63), during the Australian Grand Prix held on April 2, 2023, we will delve into specific sub-questions. 
+Regarding the difference in performance between the two drivers in Mercedes team, Lewis Hamilton (car number 44) and George Russell (car number 63), we will delve into specific sub-questions. 
 
-These sub-questions will provide insights into various aspects of their racing performance throughout the weekend.
-
-1. Which driver is best in which sector?
+These sub-questions will provide insights into various aspects of their racing performance.
 ## Sector Performance
-To compare the performance of Lewis Hamilton and George Russell in each sector, we analyzed their average sector times. 
+1. Which driver is best in which sector?
+
+To evaluate the performance of Lewis Hamilton and George Russell in each sector, we examined their average sector times across all races.
 
 Lewis Hamilton's average sector times are as follows:
+
 ```sql hamilton_sector_time_result
 select 
     avg(Sector1Time) as avg_sector_1,
@@ -23,16 +24,13 @@ from
     select 
         CAST(SUBSTRING(Sector1Time, 1, 2) AS INTEGER) * 3600000 + 
         CAST(SUBSTRING(Sector1Time, 4, 2) AS INTEGER) * 60000 +
-        CAST(SUBSTRING(Sector1Time, 7, 2) AS INTEGER) * 1000 + 
-        CAST(SUBSTRING(Sector1Time, 10, 3) AS INTEGER) AS Sector1Time,  
+        CAST(SUBSTRING(Sector1Time, 7, 2) AS INTEGER) * 1000 AS Sector1Time,  
         CAST(SUBSTRING(Sector2Time, 1, 2) AS INTEGER) * 3600000 + 
         CAST(SUBSTRING(Sector2Time, 4, 2) AS INTEGER) * 60000 +
-        CAST(SUBSTRING(Sector2Time, 7, 2) AS INTEGER) * 1000 + 
-        CAST(SUBSTRING(Sector2Time, 10, 3) AS INTEGER) AS Sector2Time,  
+        CAST(SUBSTRING(Sector2Time, 7, 2) AS INTEGER) * 1000  AS Sector2Time,  
         CAST(SUBSTRING(Sector3Time, 1, 2) AS INTEGER) * 3600000 + 
         CAST(SUBSTRING(Sector3Time, 4, 2) AS INTEGER) * 60000 +
-        CAST(SUBSTRING(Sector3Time, 7, 2) AS INTEGER) * 1000 + 
-        CAST(SUBSTRING(Sector3Time, 10, 3) AS INTEGER) AS Sector3Time
+        CAST(SUBSTRING(Sector3Time, 7, 2) AS INTEGER) * 1000 AS Sector3Time,  
     from 
         (
         select 
@@ -42,7 +40,7 @@ from
         from 
             src_laps
         where 
-            filename like '%data\\20230402%' and DriverNumber = 44 and Sector1Time is not null and Sector2Time is not null and Sector3Time is not null
+            DriverNumber = 44 and Sector1Time is not null and Sector2Time is not null and Sector3Time is not null
         ) as hamilton_sector_time_result
     ) as avg_hamilton_sector_time_result
 ```
@@ -57,16 +55,13 @@ from
     select 
         CAST(SUBSTRING(Sector1Time, 1, 2) AS INTEGER) * 3600000 + 
         CAST(SUBSTRING(Sector1Time, 4, 2) AS INTEGER) * 60000 +
-        CAST(SUBSTRING(Sector1Time, 7, 2) AS INTEGER) * 1000 + 
-        CAST(SUBSTRING(Sector1Time, 10, 3) AS INTEGER) AS Sector1Time,  
+        CAST(SUBSTRING(Sector1Time, 7, 2) AS INTEGER) * 1000 AS Sector1Time,  
         CAST(SUBSTRING(Sector2Time, 1, 2) AS INTEGER) * 3600000 + 
         CAST(SUBSTRING(Sector2Time, 4, 2) AS INTEGER) * 60000 +
-        CAST(SUBSTRING(Sector2Time, 7, 2) AS INTEGER) * 1000 + 
-        CAST(SUBSTRING(Sector2Time, 10, 3) AS INTEGER) AS Sector2Time,  
+        CAST(SUBSTRING(Sector2Time, 7, 2) AS INTEGER) * 1000  AS Sector2Time,  
         CAST(SUBSTRING(Sector3Time, 1, 2) AS INTEGER) * 3600000 + 
         CAST(SUBSTRING(Sector3Time, 4, 2) AS INTEGER) * 60000 +
-        CAST(SUBSTRING(Sector3Time, 7, 2) AS INTEGER) * 1000 + 
-        CAST(SUBSTRING(Sector3Time, 10, 3) AS INTEGER) AS Sector3Time
+        CAST(SUBSTRING(Sector3Time, 7, 2) AS INTEGER) * 1000 AS Sector3Time,  
     from 
         (
         select 
@@ -76,7 +71,7 @@ from
         from 
             src_laps
         where 
-            filename like '%data\\20230402%' and DriverNumber = 63 and Sector1Time is not null and Sector2Time is not null and Sector3Time is not null
+            DriverNumber = 63 and Sector1Time is not null and Sector2Time is not null and Sector3Time is not null
         ) as russell_sector_time_result
     ) as avg_russell_sector_time_result
 ```
@@ -85,12 +80,12 @@ The line chart below illustrates the average sector times of Lewis Hamilton and 
 
 <LineChart 
     data={[
-        {driver: 'Hamilton', sector: 'Sector 1', time: 32.4}, 
-        {driver: 'Hamilton', sector: 'Sector 2', time: 20.2}, 
-        {driver: 'Hamilton', sector: 'Sector 3', time: 38.8}, 
-        {driver: 'Russell', sector: 'Sector 1', time: 32.0}, 
-        {driver: 'Russell', sector: 'Sector 2', time: 19.9}, 
-        {driver: 'Russell', sector: 'Sector 3', time: 39.6}
+        {driver: 'Hamilton', sector: 'Sector 1', time: 30.0}, 
+        {driver: 'Hamilton', sector: 'Sector 2', time: 36.0}, 
+        {driver: 'Hamilton', sector: 'Sector 3', time: 29.3}, 
+        {driver: 'Russell', sector: 'Sector 1', time: 29.8}, 
+        {driver: 'Russell', sector: 'Sector 2', time: 35.7}, 
+        {driver: 'Russell', sector: 'Sector 3', time: 29.2}
     ]} 
     x="sector" 
     y="time" 
@@ -98,11 +93,11 @@ The line chart below illustrates the average sector times of Lewis Hamilton and 
 />
 
 ### Conclusion:
-- Sector 1: Both drivers have comparable performance in Sector 1, with Russell averaging slightly faster times than Hamilton.
-- Sector 2: Russell demonstrates marginally faster performance in Sector 2 compared to Hamilton.
-- Sector 3: Hamilton showcases slightly faster times in Sector 3 compared to Russell.
+- Sector 1: Russell demonstrates faster times than Hamilton, with a difference of 0.2 milliseconds (0.2k milliseconds), indicating better performance in Sector 1.
+- Sector 2: Russell also exhibits faster performance compared to Hamilton, with a difference of 0.3 milliseconds (0.3k milliseconds) in Sector 2.
+- Sector 3: Similarly, Russell showcases faster times than Hamilton, with a difference of 0.1 milliseconds (0.1k milliseconds) in Sector 3.
 
-Overall, while there are some variations in sector performance between the two drivers, the differences are relatively minor. Both Hamilton and Russell exhibit competitive sector times, with Hamilton holding a slight edge in Sector 3, while Russell performs slightly better in Sector 1 and Sector 2.
+Upon analyzing the data, it's evident that George Russell outperforms Lewis Hamilton in all three sectors. Russell consistently displays lower average times across all sectors, indicating superior performance throughout the race.
 
 2. Which driver does the most overtakes?
 ## Overtake Analysis
@@ -145,6 +140,7 @@ Upon reviewing the lap position data:
 Examining the lap position data, it's evident that George Russell executed more overtakes compared to Lewis Hamilton. Russell's varied positions throughout the race, including regaining positions lost due to the Power Unit failure. Therefore, George Russell is considered to have executed the most overtakes among the two drivers.
 
 3. Which driver scores the most points?
+
 
 4. Which driver is better during qualification, and which is better during the race?
 

@@ -13,9 +13,9 @@ Driver Details:
 
 In order to comprehensively assess the driver's performance, let's delve into specific sub-questions that will provide insights into various aspects of his racing performance throughout the weekend.
 
+## Overall Performance
 1. Do the results improve over time?
 
-## Overall Performance
 The driver's performance shows **significant improvement** from the practice session to the qualifying session and ultimately to the final race session. To substantiate this improvement, **lap time data and sector times** were analyzed. The table below presents the lap time data for Lewis Hamilton over the weekend, with all times converted to milliseconds.
 
 ```sql lap_time_result
@@ -98,10 +98,9 @@ Here are the charts depicting the lap time and sector time trends:
     <ReferenceLine y={avg_lap_time_result_ms[0].avg_sector_3} label="Average Time in ms"/>
 </LineChart>
 
+## Results Per session
 2. How are the results per session during the weekend?
 
-
-## Results Per session
 To comprehensively evaluate the performance across different sessions during the weekend, we'll delve into Lewis Hamilton's lap times recorded in each practice round, qualifying session, and race session.
 
 ### Practice Sessions 
@@ -240,9 +239,9 @@ The line chart below visualizes Lewis Hamilton's lap times throughout the race s
     <ReferenceLine y={avg_race_lap_time_result_ms[0].avg_lap_time} label="Average Time in ms"/>
 </LineChart>
 
+## Assessing Pit Stop Consistency
 3. Is the driver (and team) consistent with their pit stop times?
 
-## Assessing Pit Stop Consistency
 To gauge the reliability and efficiency of pit stop performance, we'll closely examine the recorded pit in and pit out times from the race weekend. Let's delve into the details of both pit in and pit out timings to evaluate their consistency and effectiveness.
 
 ```sql pit_in_time_result
@@ -324,8 +323,9 @@ The scatter plots and histograms of pit in and pit out times provide valuable in
 
 In summary, the analysis suggests that the driver and team demonstrate consistency in pit stop execution, although there may be occasional deviations that warrant further investigation to optimize pit stop performance.
 
-4. How does the position of the driver change during the race?
 ## Race Position
+4. How does the position of the driver change during the race?
+
 To analyze how the position of the driver changes during the race, we'll examine the lap-wise position data. Here are the insights derived from the data:
 ```sql position_results
 select lap, position
@@ -356,8 +356,9 @@ The bar chart further illustrates position changes, emphasizing the frequency an
 ### Conclusion:
 The analysis reveals dynamic shifts in the driver's position throughout the race, with notable moments of leading and subsequent position changes. While the driver predominantly maintained a 2nd place position, occasional advancements to 1st position underscore strategic competitiveness. The average position of {fmt(average_position[0].avg_position,'#,##0.0')} reflects consistent performance in holding the 2nd place position. Overall, the driver's adept positioning and strategic maneuvers contributed to a solid race performance.
 
-5. Has the maximum speed been improved during the weekend?
 ## Analysis Maximum Speed
+5. Has the maximum speed been improved during the weekend?
+
 To assess whether there has been an improvement in the driver's maximum speed during the race weekend, we analyzed the speed data recorded. Here are the key findings from the analysis:
 
 ```sql speed_result
