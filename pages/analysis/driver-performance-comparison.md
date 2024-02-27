@@ -268,6 +268,140 @@ Lewis Hamilton has consistently outperformed George Russell in terms of total po
 ## Qualification & Race Comparison
 4. Which driver is better during qualification, and which is better during the race?
 
+### Data Analysis
+To assess the drivers' performance during the qualifying sessions, lap time data is analyzed for both Lewis Hamilton and George Russell.
+
+#### Qualification data
+The table for lap time data.
+```sql qualify_lap_time_result
+SELECT 
+    ROW_NUMBER() OVER () AS index,
+    CASE 
+        WHEN qs.DriverNumber = 44 THEN 'Hamilton'
+        WHEN qs.DriverNumber = 63 THEN 'Russell'
+    END AS Driver,
+    CAST(SUBSTRING(LapTime, 1, 2) AS INTEGER) * 3600000 + 
+    CAST(SUBSTRING(LapTime, 4, 2) AS INTEGER) * 60000 +
+    CAST(SUBSTRING(LapTime, 7, 2) AS INTEGER) * 1000 AS LapTime
+FROM
+(
+    SELECT 
+        DriverNumber, 
+        CAST(LapTime[7:] as time) as LapTime
+    FROM 
+        src_laps 
+    WHERE 
+        filename LIKE '%Qualifying%' 
+        AND (DriverNumber = 44 OR DriverNumber = 63) 
+        AND LapTime IS NOT NULL
+) AS qs
+```
+The table for lap time data statistic.
+```sql qualify_data_statistic
+SELECT 
+    Driver, 
+    COUNT(LapTime) as count, 
+    AVG(LapTime) as mean, 
+    MIN(LapTime) as min, 
+    MAX(LapTime) as max, 
+    PERCENTILE_CONT(0.25) WITHIN GROUP (ORDER BY LapTime) as Q1, 
+    PERCENTILE_CONT(0.50) WITHIN GROUP (ORDER BY LapTime) as median, 
+    PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY LapTime) as Q3
+FROM 
+    ${qualify_lap_time_result}
+GROUP BY 
+    Driver
+```
+#### Observations:
+- Hamilton has a lower mean lap time (95383.49 ms) compared to Russell (97100.37 ms), indicating that Hamilton completes a lap faster on average.
+- Hamilton's standard deviation (18448.74 ms) is lower than Russell's (19928.68 ms), suggesting that Hamilton's lap times are more consistent.
+- Russell's minimum lap time (53000 ms) is lower than Hamilton's (62000 ms), indicating that Russell's fastest lap time is faster than Hamilton's.
+- Hamilton's median lap time (91000 ms) is lower than Russell's (93000 ms), suggesting that more than half of Hamilton's lap times are faster than more than half of Russell's lap times.
+
+#### Conclusion:
+- While Russell has shown potential with faster individual lap times, Hamilton's consistency and overall performance in qualifying sessions appear to be stronger.
+
+### Race Data
+The table for lap time data.
+```sql race_lap_time_result
+SELECT 
+    ROW_NUMBER() OVER () AS index,
+    CASE 
+        WHEN rs.DriverNumber = 44 THEN 'Hamilton'
+        WHEN rs.DriverNumber = 63 THEN 'Russell'
+    END AS Driver,
+    CAST(SUBSTRING(LapTime, 1, 2) AS INTEGER) * 3600000 + 
+    CAST(SUBSTRING(LapTime, 4, 2) AS INTEGER) * 60000 +
+    CAST(SUBSTRING(LapTime, 7, 2) AS INTEGER) * 1000 AS LapTime
+FROM
+(
+    SELECT 
+        DriverNumber, 
+        CAST(LapTime[7:] as time) as LapTime
+    FROM 
+        src_laps 
+    WHERE 
+        filename LIKE '%Race%' 
+        AND (DriverNumber = 44 OR DriverNumber = 63) 
+        AND LapTime IS NOT NULL
+) AS rs
+```
+The table for lap time data statistic.
+```sql race_data_statistic
+SELECT 
+    Driver, 
+    COUNT(LapTime) as count, 
+    AVG(LapTime) as mean, 
+    MIN(LapTime) as min, 
+    MAX(LapTime) as max, 
+    PERCENTILE_CONT(0.25) WITHIN GROUP (ORDER BY LapTime) as Q1, 
+    PERCENTILE_CONT(0.50) WITHIN GROUP (ORDER BY LapTime) as median, 
+    PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY LapTime) as Q3
+FROM 
+    ${race_lap_time_result}
+GROUP BY 
+    Driver
+```
+#### Observations:
+- Hamilton has participated in more races (3399) compared to Russell (3208).
+- Russell has a higher mean lap time (90523.1 ms) than Hamilton (89620.8 ms), suggesting potentially better average performance by Russell.
+- Russell's minimum lap time (55000 ms) is lower than Hamilton's (62000 ms), indicating that Russell has had faster individual laps.
+- For all quartile values (Q1, median, Q3), Russell's lap times are slightly higher than Hamilton's, indicating potentially better overall performance by Russell.
+#### Conclusion:
+- While Hamilton has more experience and a lower average lap time, Russell has shown potential with faster individual laps and possibly better overall race performance.
+
+### Graphical Representation:
+Line charts for both qualification and race lap times can help visualize the trends and differences between Hamilton and Russell over time, highlighting their strengths and weaknesses in each aspect of the race weekend.
+
+Qualify Lap Time LineChart
+<LineChart
+    data={qualify_lap_time_result} 
+    x=index 
+    y=LapTime
+    series=Driver
+/>
+
+Based on the line chart and the calculated statistics, we can interpret the following:
+- Consistency: Hamilton's line exhibits less variation compared to Russell's, indicating greater consistency in lap times.
+- Average Speed: Hamilton's average lap time (~95,383 ms) is lower than Russell's (~97,100 ms), suggesting higher average speed.
+- Best Lap Time: Hamilton's fastest lap time is 62,000 ms, while Russell's is 53,000 ms, indicating Russell's potential for faster individual laps.
+
+Race Lap Time LineChart
+<LineChart
+    data={race_lap_time_result} 
+    x=index 
+    y=LapTime
+    series=Driver
+/>
+
+Based on the line chart and the calculated statistics, we can interpret the following:
+- Average Speed: Hamilton's lower average lap time (~89,621 ms) suggests higher average speed compared to Russell (~90,523 ms).
+- Consistency: Hamilton's lower standard deviation of lap times (~14,293 ms) indicates greater consistency compared to Russell (~15,169 ms).
+- Best Lap Time: Russell's lower best lap time (55,000 ms) suggests the potential for faster individual laps compared to Hamilton (67,000 ms).
+
+Overall Conclusion: 
+- While Russell shows potential for faster individual laps, Hamilton demonstrates superior average speed and consistency, suggesting stronger overall performance as a driver.
+
 ## Improvement Comparison
 5. Which driver improves best from `free practice 1` till the race?
 
