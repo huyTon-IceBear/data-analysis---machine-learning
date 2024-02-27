@@ -215,7 +215,55 @@ Based on the evidence presented, it's apparent that:
 
 ## Scored Points Comparison
 3. Which driver scores the most points?
+To determine which driver scores the most points between Lewis Hamilton and George Russell, let's start by comparing the total points earned by each driver.
+### Total Point Overall
+Here's the data provided for Lewis Hamilton's points and total points:
+```sql hamilton_point
+select name, date, points from src_driver_results where CarNumber = 44 and year >= 2014
+```
+```sql total_hamilton_point
+select sum(points) from ${hamilton_point}
+```
+And for George Russell's points and total points:
+```sql russell_point
+select name, date, points from src_driver_results where CarNumber = 63 and year >= 2019
+```
+```sql total_russell_point
+select sum(points) from ${russell_point}
+```
+It's clear that Lewis Hamilton scored a much higher point 3333 compared to 299 of George Russell
 
+### Total Point in Shared Race
+To make the comparison more accurate, let's compare the points between 2 races in the race they participate together, here is the data table: 
+```sql point_comparison
+    SELECT 
+        hp.date,
+        hp.points AS hamilton_point,
+        rp.points AS russell_point
+    FROM 
+        ${hamilton_point} as hp
+    JOIN 
+        ${russell_point} as rp ON hp.date = rp.date
+```
+The total number of overtakes for each driver is as follows:
+```sql total_point_comparison
+SELECT 
+    SUM(hamilton_point) AS hamilton_total_point,
+    SUM(russell_point) AS russell_total_point
+FROM 
+    ${point_comparison}
+```
+From the calculations, it's clear that Lewis Hamilton scored a total of 2487 points, while George Russell scored a total of 88 points.
+
+The line chart below illustrates the comparison of points earned by Lewis Hamilton and George Russell over the specified period. Each line represents the points earned by each driver in the races where they participated together. The X-axis represents the dates (when the race happened), while the Y-axis represents the total points earned in that race.
+<LineChart
+    data={point_comparison} 
+    x=date 
+    y={["hamilton_point", "russell_point"]}
+/>
+
+### Conclusion
+Lewis Hamilton has consistently outperformed George Russell in terms of total points earned. Despite both drivers participating in races together, Hamilton's points significantly outweigh those of Russell. This analysis reaffirms Hamilton's dominance in the sport compared to Russell, indicating Hamilton as the driver who scores the most points.
 
 ## Qualification & Race Comparison
 4. Which driver is better during qualification, and which is better during the race?
@@ -223,7 +271,7 @@ Based on the evidence presented, it's apparent that:
 ## Improvement Comparison
 5. Which driver improves best from `free practice 1` till the race?
 
-```sql avarage_position
+```sql average_position
 select carNumber, avg(position) as average_position, avg(milliseconds) as finish_time_in_milliseconds
 from src_lap_times
 where date = '2023-04-02' 
