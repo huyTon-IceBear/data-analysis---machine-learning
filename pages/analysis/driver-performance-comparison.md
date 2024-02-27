@@ -7,7 +7,7 @@ To address the query:
 Regarding the difference in performance between the two drivers in Mercedes team, Lewis Hamilton (car number 44) and George Russell (car number 63), we will delve into specific sub-questions. 
 
 These sub-questions will provide insights into various aspects of their racing performance.
-## Sector Performance
+## Sector Performance Comparison
 1. Which driver is best in which sector?
 
 To evaluate the performance of Lewis Hamilton and George Russell in each sector, we examined their average sector times across all races.
@@ -100,50 +100,127 @@ The line chart below illustrates the average sector times of Lewis Hamilton and 
 Upon analyzing the data, it's evident that George Russell outperforms Lewis Hamilton in all three sectors. Russell consistently displays lower average times across all sectors, indicating superior performance throughout the race.
 
 2. Which driver does the most overtakes?
-## Overtake Analysis
-To determine which driver executed the most overtakes during the race, we analyzed the lap position data for both Lewis Hamilton and George Russell. Here are the lap position data for each driver:
+## Overtake Comparison
+To determine which driver executed the most overtakes during the race, we analyzed the lap position data for both Lewis Hamilton and George Russell. Additionally, we examined the number of overtakes in races where both drivers participated, providing a more direct comparison.
 
-Lewis Hamilton (Car Number 44):
-```sql hamilton_position
-select lap, position from 
-    src_lap_times
-where 
-    date = '2023-04-02' and carNumber = 44
-```
-George Russell (Car Number 63):
-```sql russell_position
-select lap, position from 
-    src_lap_times
-where 
-    date = '2023-04-02' and carNumber = 63
-```
+### Data Overview
+- Lewis Hamilton (Car Number 44)
+    - Records of overtakes in career (till 02/04/2023):
+    ```sql hamilton_overtakes
+    WITH hamilton_overtakes AS (
+        SELECT date, lap, position
+        FROM src_lap_times
+        WHERE carNumber = 44
+    ),
+    hamilton_overtakes_count AS (
+        SELECT 
+            date,
+            COUNT(*) AS overtakes_within_race
+        FROM (
+            SELECT 
+                date, 
+                lap, 
+                position,
+                CASE WHEN position - LAG(position) OVER (PARTITION BY date ORDER BY lap) < 0 THEN 1 ELSE 0 END AS overtakes
+            FROM hamilton_overtakes
+        ) AS hamilton_overtakes_count
+        WHERE overtakes = 1
+        GROUP BY date
+        ORDER BY date
+    )
+    SELECT * FROM hamilton_overtakes_count
+    ```
+    - Statistic of overtakes:
+    The total number of overtakes by Lewis Hamilton:
+    ```sql total_hamilton_overtakes
+    SELECT 
+        SUM(overtakes_within_race) AS total_overtake,
+        avg(overtakes_within_race) AS average_overtake_per_race
+    FROM ${hamilton_overtakes}
+    ```
+- George Russell (Car Number 63)
+    - Records of overtakes in career (till 02/04/2023):
+    ```sql russell_overtakes
+    WITH russell_overtakes AS (
+        SELECT date, lap, position
+        FROM src_lap_times
+        WHERE carNumber = 63
+    ),
+    russell_overtakes_count AS (
+        SELECT 
+            date,
+            COUNT(*) AS overtakes_within_race
+        FROM (
+            SELECT 
+                date, 
+                lap, 
+                position,
+                CASE WHEN position - LAG(position) OVER (PARTITION BY date ORDER BY lap) < 0 THEN 1 ELSE 0 END AS overtakes
+            FROM russell_overtakes
+        ) AS russell_overtakes_count
+        WHERE overtakes = 1
+        GROUP BY date
+        ORDER BY date
+    )
+    SELECT * FROM russell_overtakes_count
+    ```
+    - Statistic of overtakes:
+    ```sql total_russell_overtakes
+    SELECT 
+        SUM(overtakes_within_race) AS total_overtake,
+        avg(overtakes_within_race) AS average_overtake_per_race
+    FROM ${russell_overtakes}
+    ```
+
 ### Analysis:
-We represented the lap positions of both drivers throughout the race using line charts. In these visualizations, the x-axis denotes the lap number, while the y-axis indicates the position on the track.
+- Lewis Hamilton's Performance
+    <LineChart data={hamilton_overtakes} x=date y=overtakes_within_race >
+        <ReferenceLine y={4.59} label="Average Overtake"/>
+    </LineChart>
+    The line chart illustrates Lewis Hamilton's overtakes within each race over time. Hamilton's overtaking performance varies across races, with some witnessing higher frequencies than others. Notably, there are peaks and troughs in the graph.
 
-Upon reviewing the lap position data:
+- George Russell's Performance
+    <LineChart data={russell_overtakes} x=date y=overtakes_within_race >
+        <ReferenceLine y={6.19} label="Average Overtake"/>
+    </LineChart>
+    The line chart showcases George Russell's overtakes within each race over time. Similar to Hamilton, Russell's overtaking performance fluctuates across races.
 
-- Hamilton's Line Chart: Hamilton's line illustrates his race performance, showing how his position fluctuated over each lap. Consistently high positions, such as positions 1 or 2, indicate periods when Hamilton was leading or closely following the race leader.
-<LineChart 
-    data={hamilton_position}
-    x="lap" 
-    y="position"
-/>
-
-- Russell's Line Chart: George Russell's line graph illustrates his race progression, highlighting his initial lead for the first seven laps of the race, followed by notable declines in position, each succeeded by recoveries. Notably, he dropped to 15th position at lap 17due to a Power Unit failure, which forced him to retire on lap 18, triggering a virtual safety car.
-<LineChart 
-    data={russell_position}
-    x="lap" 
-    y="position"
-/>
+- Head-to-Head Comparison: The number of overtakes between Lewis Hamilton and George Russell for races they participated in together. 
+    ```sql overtakes_comparison
+    SELECT 
+        ho.date,
+        ho.overtakes_within_race AS hamilton_overtakes,
+        ro.overtakes_within_race AS russell_overtakes
+    FROM 
+        ${hamilton_overtakes} as ho
+    JOIN 
+        ${russell_overtakes} as ro ON ho.date = ro.date
+    ```
+    The total number of overtakes for each driver is as follows::
+    ```sql total_overtakes_comparison
+    SELECT 
+        SUM(hamilton_overtakes) AS hamilton_total_overtakes,
+        SUM(russell_overtakes) AS russell_total_overtakes
+    FROM 
+        ${overtakes_comparison}
+    ```
+    <LineChart data={overtakes_comparison} x=date y={["hamilton_overtakes","russell_overtakes"]} />
+    The line chart compares the number of overtakes between Lewis Hamilton and George Russell for races they participated in together. Variations between the two lines highlight differences in their overtaking performances in specific races.
 
 ### Conclusion:
-Examining the lap position data, it's evident that George Russell executed more overtakes compared to Lewis Hamilton. Russell's varied positions throughout the race, including regaining positions lost due to the Power Unit failure. Therefore, George Russell is considered to have executed the most overtakes among the two drivers.
+Based on the evidence presented, it's apparent that: 
+- Lewis Hamilton has executed more overtakes than George Russell throughout their careers. However, it's worth mentioning that Lewis Hamilton began racing in 2014 compared to George Russell's start in 2019, which may have influenced the total overtakes. 
+- Despite Hamilton's overall lead in total overtakes, George Russell demonstrates a competitive edge in average overtakes per race. 
+- Additionally, in races where both drivers participated together, Russell often matches or surpasses Hamilton's overtaking numbers, indicating his potential as a formidable opponent.
 
+## Scored Points Comparison
 3. Which driver scores the most points?
 
 
+## Qualification & Race Comparison
 4. Which driver is better during qualification, and which is better during the race?
 
+## Improvement Comparison
 5. Which driver improves best from `free practice 1` till the race?
 
 ```sql avarage_position
