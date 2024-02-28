@@ -405,31 +405,169 @@ Overall Conclusion:
 ## Improvement Comparison
 5. Which driver improves best from `free practice 1` till the race?
 
-```sql average_position
-select carNumber, avg(position) as average_position, avg(milliseconds) as finish_time_in_milliseconds
-from src_lap_times
-where date = '2023-04-02' 
-group by carNumber
-order by average_position asc
+To determine the driver who shows the most improvement from Free Practice 1 (FP1) to the race, we'll analyze two crucial factors: speed and time.
+### Speed Comparison
+We'll start by examining the speed data for both drivers:
+```sql drivers_speed_data
+SELECT 
+    Date as EventDate,
+    case 
+        when filename like '%Practice_1%' then filename[15:instr(filename, 'Practice_1') - 2]
+        when filename like '%Practice_2%' then filename[15:instr(filename, 'Practice_2') - 2]
+        when filename like '%Practice_3%' then filename[15:instr(filename, 'Practice_3') - 2]
+        when filename like '%Qualifying%' then filename[15:instr(filename, 'Qualifying') - 2]
+        when filename like '%Race%' then filename[15:instr(filename, 'Race') - 2]
+    end as EventName, 
+    CASE
+        WHEN filename LIKE '%Practice_1%' THEN 'Practice_1'
+        WHEN filename LIKE '%Practice_2%' THEN 'Practice_2'
+        WHEN filename LIKE '%Practice_3%' THEN 'Practice_3'
+        WHEN filename LIKE '%Qualifying%' THEN 'Qualifying'
+        WHEN filename LIKE '%Race%' THEN 'Race'
+    END as Session, 
+    CAST(Time[7:] as time) as RaceTime, 
+    Speed,
+    CASE 
+        WHEN DriverNumber = 44 THEN 'Hamilton'
+        WHEN DriverNumber = 63 THEN 'Russell'
+    END as Driver
+FROM 
+    src_car_data 
+WHERE 
+    (DriverNumber = 44 OR DriverNumber = 63) AND Speed IS NOT NULL
+```
+To define the trend of each racer speed, let's examine the the average speed in each session for each racer
+```sql avg_speed
+SELECT 
+    Driver, 
+    Session,
+    AVG(Speed) AS avg_speed
+FROM 
+    ${drivers_speed_data}
+WHERE 
+    Session IN ('Practice_1', 'Practice_2', 'Practice_3', 'Qualifying', 'Race')
+GROUP BY 
+    Driver, Session
+Order by
+    Driver, Session
+```
+To visualize the trend in each driver's speed, we'll use a line chart:
+<LineChart data={avg_speed} x=Session y=avg_speed series=Driver/>
+The chart clearly depicts Hamilton's upward trend from Practice 1 to the Race, with minor declines from Practice 2 to Qualifying. Conversely, Russell shows a downward trend from Practice 1 to the Race, with no observable uptrend.
+
+Conclusion:
+- Hamilton demonstrates the most significant improvement during the race in terms of speed.
+
+To provide a clearer comparison, let's analyze the difference in average speed for each driver between 'Practice_1' and 'Race'. This data highlights the variance in average speed from Free Practice 1 to the race for each driver, with the driver exhibiting the highest positive difference considered the one who improved the most:
+```sql fp1_avg_speed
+SELECT 
+    fa.Driver, 
+    (ra.race_avg_speed - fa.fp1_avg_speed) as speed_difference
+FROM 
+    (SELECT Driver, AVG(Speed) as fp1_avg_speed
+    FROM ${drivers_speed_data}
+    WHERE Session = 'Practice_1'
+    GROUP BY Driver) as fa
+JOIN 
+    (SELECT Driver, AVG(Speed) as race_avg_speed
+    FROM ${drivers_speed_data}
+    WHERE Session = 'Race'
+    GROUP BY Driver) as ra ON fa.Driver = ra.Driver;
+```
+We can further illustrate this comparison with a horizontal bar chart:
+<BarChart 
+    data={fp1_avg_speed}
+    x=Driver
+    y=speed_difference
+    swapXY=true
+/>
+The bar chart underscores the significant disparity between Hamilton and Russell in terms of speed improvement, further confirming Hamilton's superior performance.
+
+### Lap Time Comparison
+We'll start by examining the lap time data for both drivers:
+```sql drivers_lap_time_data
+SELECT
+    CAST(filename[7:10] || '-' || filename[11:12] || '-' || filename[13:14] as date) as EventDate,
+    CASE 
+        WHEN filename LIKE '%Practice_1%' THEN filename[15:INSTR(filename, 'Practice_1') - 2]
+        WHEN filename LIKE '%Practice_2%' THEN filename[15:INSTR(filename, 'Practice_2') - 2]
+        WHEN filename LIKE '%Practice_3%' THEN filename[15:INSTR(filename, 'Practice_3') - 2]
+        WHEN filename LIKE '%Qualifying%' THEN filename[15:INSTR(filename, 'Qualifying') - 2]
+        WHEN filename LIKE '%Sprint%' THEN filename[15:INSTR(filename, 'Sprint') - 2]
+        WHEN filename LIKE '%Race%' THEN filename[15:INSTR(filename, 'Race') - 2] 
+    END AS EventName,
+    CASE
+        WHEN filename LIKE '%Practice_1%' THEN 'Practice_1'
+        WHEN filename LIKE '%Practice_2%' THEN 'Practice_2'
+        WHEN filename LIKE '%Practice_3%' THEN 'Practice_3'
+        WHEN filename LIKE '%Qualifying%' THEN 'Qualifying'
+        WHEN filename LIKE '%Sprint%' THEN 'Sprint'
+        WHEN filename LIKE '%Race%' THEN 'Race'
+    END AS Session,
+    CAST(Time[7:] as time) as RaceTime,
+    CAST(SUBSTRING(CAST(LapTime[7:] as time), 1, 2) AS INTEGER) * 3600000 + 
+    CAST(SUBSTRING(CAST(LapTime[7:] as time), 4, 2) AS INTEGER) * 60000 +
+    CAST(SUBSTRING(CAST(LapTime[7:] as time), 7, 2) AS INTEGER) * 1000 + 
+    CAST(SUBSTRING(CAST(LapTime[7:] as time), 7, 2) AS INTEGER) AS LapTime_in_ms,
+    CASE 
+        WHEN DriverNumber = 44 THEN 'Hamilton'
+        WHEN DriverNumber = 63 THEN 'Russell'
+    END AS Driver
+FROM 
+    src_laps
+WHERE 
+    (DriverNumber = 44 OR DriverNumber = 63) AND LapTime IS NOT NULL
 ```
 
-```sql average_lap_results
-select 
-    lap_data.lap,
-    lap_data.milliseconds,
-    avg_time.average_finish_time
-from 
-    src_lap_times as lap_data
-join 
-    (select 
-         lap,
-         avg(milliseconds) as average_finish_time
-     from 
-         src_lap_times
-     where 
-         date = '2023-04-02'
-     group by lap) as avg_time on lap_data.lap = avg_time.lap
-where 
-    lap_data.date = '2023-04-02' and lap_data.carNumber = 44;
+To define the trend of each racer speed, let's examine the the average lap time in each session for each racer
+```sql avg_time
+SELECT 
+    Driver, 
+    Session,
+    AVG(LapTime_in_ms) AS avg_lap_time_in_ms
+FROM 
+    ${drivers_lap_time_data}
+WHERE 
+    Session IN ('Practice_1', 'Practice_2', 'Practice_3', 'Qualifying', 'Race')
+GROUP BY 
+    Driver, Session
+Order by
+    Driver, Session
 ```
-<LineChart data={average_lap_results} x=lap y={["milliseconds", "average_finish_time"]} />
+We'll visualize the trend in each driver's lap time using a line chart:
+<LineChart data={avg_time} x=Session y=avg_lap_time_in_ms series=Driver/>
+The line chart reveals Hamilton's slight decline in lap time from Practice 1 to the Race, while Russell's lap time also decreases slightly over the same sessions.
+
+Conclusion:
+- Both drivers, Hamilton and Russell, demonstrate improvement in lap time from Practice 1 to the Race, with both showing a reduction in lap time over the sessions.
+
+To further analyze the improvement, let's compare the difference in average lap time for each driver between 'Practice_1' and 'Race'. The driver with the highest negative difference signifies the most improvement:
+```sql fp1_avg_lap_time
+SELECT 
+    fa.Driver, 
+    (ra.race_avg_lap_time_in_ms - fa.fp1_avg_lap_time_in_ms) as time_difference_in_ms
+FROM 
+    (SELECT Driver, AVG(LapTime_in_ms) as fp1_avg_lap_time_in_ms
+    FROM ${drivers_lap_time_data}
+    WHERE Session = 'Practice_1'
+    GROUP BY Driver) as fa
+JOIN 
+    (SELECT Driver, AVG(LapTime_in_ms) as race_avg_lap_time_in_ms
+    FROM ${drivers_lap_time_data}
+    WHERE Session = 'Race'
+    GROUP BY Driver) as ra ON fa.Driver = ra.Driver;
+```
+
+We'll represent this comparison using a horizontal bar chart:
+<BarChart 
+    data={fp1_avg_lap_time}
+    x=Driver
+    y=time_difference_in_ms
+    swapXY=true
+/>
+The bar chart indicates that both Hamilton and Russell have reduced their average lap times from Practice 1 to the Race, with Russell exhibiting a slightly greater improvement.
+
+### Overall Conclusion
+Based on the analysis, Hamilton demonstrates the most significant improvement from Free Practice 1 (FP1) to the race. Hamilton's speed showed a notable uptrend from Practice 1 to the Race, indicating substantial improvement in speed over the sessions. Furthermore, when comparing the difference in average speed between FP1 and the Race, Hamilton exhibited a significantly higher increase in speed compared to Russell.
+
+While both Hamilton and Russell exhibited a reduction in lap time from FP1 to the Race, Hamilton's improvement in speed was more pronounced, making him the driver who improves best overall from FP1 till the race. Therefore, Hamilton emerges as the driver showing the most improvement over the course of the sessions.
