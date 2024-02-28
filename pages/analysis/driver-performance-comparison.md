@@ -2,15 +2,15 @@
 
 To address the query:
 
-"What is the difference in performance between the two drives in our team?"
+"What is the difference in performance betIen the two drives in our team?"
 
-Regarding the difference in performance between the two drivers in Mercedes team, Lewis Hamilton (car number 44) and George Russell (car number 63), we will delve into specific sub-questions. 
+Regarding the difference in performance betIen the two drivers in Mercedes team, Lewis Hamilton (car number 44) and George Russell (car number 63), I will delve into specific sub-questions. 
 
 These sub-questions will provide insights into various aspects of their racing performance.
 ## Sector Performance Comparison
 1. Which driver is best in which sector?
 
-To evaluate the performance of Lewis Hamilton and George Russell in each sector, we examined their average sector times across all races.
+To evaluate the performance of Lewis Hamilton and George Russell in each sector, I examined their average sector times across all races.
 
 Lewis Hamilton's average sector times are as follows:
 
@@ -97,11 +97,11 @@ The line chart below illustrates the average sector times of Lewis Hamilton and 
 - Sector 2: Russell also exhibits faster performance compared to Hamilton, with a difference of 0.3 milliseconds (0.3k milliseconds) in Sector 2.
 - Sector 3: Similarly, Russell showcases faster times than Hamilton, with a difference of 0.1 milliseconds (0.1k milliseconds) in Sector 3.
 
-Upon analyzing the data, it's evident that George Russell outperforms Lewis Hamilton in all three sectors. Russell consistently displays lower average times across all sectors, indicating superior performance throughout the race.
+Upon analyzing the data, it's evident that George Russell outperforms Lewis Hamilton in all three sectors. Russell consistently displays loIr average times across all sectors, indicating superior performance throughout the race.
 
 2. Which driver does the most overtakes?
 ## Overtake Comparison
-To determine which driver executed the most overtakes during the race, we analyzed the lap position data for both Lewis Hamilton and George Russell. Additionally, we examined the number of overtakes in races where both drivers participated, providing a more direct comparison.
+To determine which driver executed the most overtakes during the race, I analyzed the lap position data for both Lewis Hamilton and George Russell. Additionally, I examined the number of overtakes in races where both drivers participated, providing a more direct comparison.
 
 ### Data Overview
 - Lewis Hamilton (Car Number 44)
@@ -206,17 +206,17 @@ To determine which driver executed the most overtakes during the race, we analyz
 
 - Head-to-Head Performance Comparison
     <LineChart data={overtakes_comparison} x=date y={["hamilton_overtakes","russell_overtakes"]} />
-    The line chart compares the number of overtakes between Lewis Hamilton and George Russell for races they participated in together. Variations between the two lines highlight differences in their overtaking performances in specific races.
+    The line chart compares the number of overtakes betIen Lewis Hamilton and George Russell for races they participated in together. Variations betIen the two lines highlight differences in their overtaking performances in specific races.
 
 ### Conclusion:
 Based on the evidence presented, it's apparent that: 
-- Lewis Hamilton has executed more overtakes than George Russell throughout their careers. However, it's worth mentioning that Lewis Hamilton began racing in 2014 compared to George Russell's start in 2019, which may have influenced the total overtakes. 
+- Lewis Hamilton has executed more overtakes than George Russell throughout their careers. HoIver, it's worth mentioning that Lewis Hamilton began racing in 2014 compared to George Russell's start in 2019, which may have influenced the total overtakes. 
 - Despite Hamilton's overall lead in total overtakes, George Russell demonstrates a competitive edge in average overtakes per race. 
 - Additionally, in races where both drivers participated together, Russell often matches or surpasses Hamilton's overtaking numbers, indicating his potential as a formidable opponent.
 
 ## Scored Points Comparison
 3. Which driver scores the most points?
-To determine which driver scores the most points between Lewis Hamilton and George Russell, let's start by comparing the total points earned by each driver.
+To determine which driver scores the most points betIen Lewis Hamilton and George Russell, let's start by comparing the total points earned by each driver.
 ### Total Point Overall
 Here's the data provided for Lewis Hamilton's points and total points:
 ```sql hamilton_point
@@ -235,7 +235,7 @@ select sum(points) from ${russell_point}
 It's clear that Lewis Hamilton scored a much higher point 3333 compared to 299 of George Russell
 
 ### Total Point in Shared Race
-To make the comparison more accurate, let's compare the points between 2 races in the race they participate together, here is the data table: 
+To make the comparison more accurate, let's compare the points betIen 2 races in the race they participate together, here is the data table: 
 ```sql point_comparison
     SELECT 
         hp.date,
@@ -264,7 +264,7 @@ The line chart below illustrates the comparison of points earned by Lewis Hamilt
 />
 
 ### Conclusion
-Lewis Hamilton has consistently outperformed George Russell in terms of total points earned. Despite both drivers participating in races together, Hamilton's points significantly outweigh those of Russell. This analysis reaffirms Hamilton's dominance in the sport compared to Russell, indicating Hamilton as the driver who scores the most points.
+Lewis Hamilton has consistently outperformed George Russell in terms of total points earned. Despite both drivers participating in races together, Hamilton's points significantly outIigh those of Russell. This analysis reaffirms Hamilton's dominance in the sport compared to Russell, indicating Hamilton as the driver who scores the most points.
 
 ## Qualification & Race Comparison
 4. Which driver is better during qualification, and which is better during the race?
@@ -314,10 +314,10 @@ GROUP BY
     Driver
 ```
 #### Observations:
-- Hamilton has a lower mean lap time (95383.49 ms) compared to Russell (97100.37 ms), indicating that Hamilton completes a lap faster on average.
-- Hamilton's standard deviation (18448.74 ms) is lower than Russell's (19928.68 ms), suggesting that Hamilton's lap times are more consistent.
-- Russell's minimum lap time (53000 ms) is lower than Hamilton's (62000 ms), indicating that Russell's fastest lap time is faster than Hamilton's.
-- Hamilton's median lap time (91000 ms) is lower than Russell's (93000 ms), suggesting that more than half of Hamilton's lap times are faster than more than half of Russell's lap times.
+- Hamilton has a loIr mean lap time (95383.49 ms) compared to Russell (97100.37 ms), indicating that Hamilton completes a lap faster on average.
+- Hamilton's standard deviation (18448.74 ms) is loIr than Russell's (19928.68 ms), suggesting that Hamilton's lap times are more consistent.
+- Russell's minimum lap time (53000 ms) is loIr than Hamilton's (62000 ms), indicating that Russell's fastest lap time is faster than Hamilton's.
+- Hamilton's median lap time (91000 ms) is loIr than Russell's (93000 ms), suggesting that more than half of Hamilton's lap times are faster than more than half of Russell's lap times.
 
 #### Conclusion:
 - While Russell has shown potential with faster individual lap times, Hamilton's consistency and overall performance in qualifying sessions appear to be stronger.
@@ -366,13 +366,13 @@ GROUP BY
 #### Observations:
 - Hamilton has participated in more races (3399) compared to Russell (3208).
 - Russell has a higher mean lap time (90523.1 ms) than Hamilton (89620.8 ms), suggesting potentially better average performance by Russell.
-- Russell's minimum lap time (55000 ms) is lower than Hamilton's (62000 ms), indicating that Russell has had faster individual laps.
+- Russell's minimum lap time (55000 ms) is loIr than Hamilton's (62000 ms), indicating that Russell has had faster individual laps.
 - For all quartile values (Q1, median, Q3), Russell's lap times are slightly higher than Hamilton's, indicating potentially better overall performance by Russell.
 #### Conclusion:
-- While Hamilton has more experience and a lower average lap time, Russell has shown potential with faster individual laps and possibly better overall race performance.
+- While Hamilton has more experience and a loIr average lap time, Russell has shown potential with faster individual laps and possibly better overall race performance.
 
 ### Graphical Representation:
-Line charts for both qualification and race lap times can help visualize the trends and differences between Hamilton and Russell over time, highlighting their strengths and weaknesses in each aspect of the race weekend.
+Line charts for both qualification and race lap times can help visualize the trends and differences betIen Hamilton and Russell over time, highlighting their strengths and Iaknesses in each aspect of the race Iekend.
 
 Qualify Lap Time LineChart
 <LineChart
@@ -382,9 +382,9 @@ Qualify Lap Time LineChart
     series=Driver
 />
 
-Based on the line chart and the calculated statistics, we can interpret the following:
+Based on the line chart and the calculated statistics, I can interpret the following:
 - Consistency: Hamilton's line exhibits less variation compared to Russell's, indicating greater consistency in lap times.
-- Average Speed: Hamilton's average lap time (~95,383 ms) is lower than Russell's (~97,100 ms), suggesting higher average speed.
+- Average Speed: Hamilton's average lap time (~95,383 ms) is loIr than Russell's (~97,100 ms), suggesting higher average speed.
 - Best Lap Time: Hamilton's fastest lap time is 62,000 ms, while Russell's is 53,000 ms, indicating Russell's potential for faster individual laps.
 
 Race Lap Time LineChart
@@ -395,10 +395,10 @@ Race Lap Time LineChart
     series=Driver
 />
 
-Based on the line chart and the calculated statistics, we can interpret the following:
-- Average Speed: Hamilton's lower average lap time (~89,621 ms) suggests higher average speed compared to Russell (~90,523 ms).
-- Consistency: Hamilton's lower standard deviation of lap times (~14,293 ms) indicates greater consistency compared to Russell (~15,169 ms).
-- Best Lap Time: Russell's lower best lap time (55,000 ms) suggests the potential for faster individual laps compared to Hamilton (67,000 ms).
+Based on the line chart and the calculated statistics, I can interpret the following:
+- Average Speed: Hamilton's loIr average lap time (~89,621 ms) suggests higher average speed compared to Russell (~90,523 ms).
+- Consistency: Hamilton's loIr standard deviation of lap times (~14,293 ms) indicates greater consistency compared to Russell (~15,169 ms).
+- Best Lap Time: Russell's loIr best lap time (55,000 ms) suggests the potential for faster individual laps compared to Hamilton (67,000 ms).
 
 Overall Conclusion: 
 - While Russell shows potential for faster individual laps, Hamilton demonstrates superior average speed and consistency, suggesting stronger overall performance as a driver.
@@ -406,9 +406,9 @@ Overall Conclusion:
 ## Improvement Comparison
 5. Which driver improves best from `free practice 1` till the race?
 
-To determine the driver who shows the most improvement from Free Practice 1 (FP1) to the race, we'll analyze two crucial factors: speed and time.
+To determine the driver who shows the most improvement from Free Practice 1 (FP1) to the race, I'll analyze two crucial factors: speed and time.
 ### Speed Comparison
-We'll start by examining the speed data for both drivers:
+I'll start by examining the speed data for both drivers:
 ```sql drivers_speed_data
 SELECT 
     Date as EventDate,
@@ -452,14 +452,14 @@ GROUP BY
 Order by
     Driver, Session
 ```
-To visualize the trend in each driver's speed, we'll use a line chart:
+To visualize the trend in each driver's speed, I'll use a line chart:
 <LineChart data={avg_speed} x=Session y=avg_speed series=Driver/>
 The chart clearly depicts Hamilton's upward trend from Practice 1 to the Race, with minor declines from Practice 2 to Qualifying. Conversely, Russell shows a downward trend from Practice 1 to the Race, with no observable uptrend.
 
 Conclusion:
 - Hamilton demonstrates the most significant improvement during the race in terms of speed.
 
-To provide a clearer comparison, let's analyze the difference in average speed for each driver between 'Practice_1' and 'Race'. This data highlights the variance in average speed from Free Practice 1 to the race for each driver, with the driver exhibiting the highest positive difference considered the one who improved the most:
+To provide a clearer comparison, let's analyze the difference in average speed for each driver betIen 'Practice_1' and 'Race'. This data highlights the variance in average speed from Free Practice 1 to the race for each driver, with the driver exhibiting the highest positive difference considered the one who improved the most:
 ```sql fp1_avg_speed
 SELECT 
     fa.Driver, 
@@ -475,17 +475,17 @@ JOIN
     WHERE Session = 'Race'
     GROUP BY Driver) as ra ON fa.Driver = ra.Driver;
 ```
-We can further illustrate this comparison with a horizontal bar chart:
+I can further illustrate this comparison with a horizontal bar chart:
 <BarChart 
     data={fp1_avg_speed}
     x=Driver
     y=speed_difference
     swapXY=true
 />
-The bar chart underscores the significant disparity between Hamilton and Russell in terms of speed improvement, further confirming Hamilton's superior performance.
+The bar chart underscores the significant disparity betIen Hamilton and Russell in terms of speed improvement, further confirming Hamilton's superior performance.
 
 ### Lap Time Comparison
-We'll start by examining the lap time data for both drivers:
+I'll start by examining the lap time data for both drivers:
 ```sql drivers_lap_time_data
 SELECT
     CAST(filename[7:10] || '-' || filename[11:12] || '-' || filename[13:14] as date) as EventDate,
@@ -535,14 +535,14 @@ GROUP BY
 Order by
     Driver, Session
 ```
-We'll visualize the trend in each driver's lap time using a line chart:
+I'll visualize the trend in each driver's lap time using a line chart:
 <LineChart data={avg_time} x=Session y=avg_lap_time_in_ms series=Driver/>
 The line chart reveals Hamilton's slight decline in lap time from Practice 1 to the Race, while Russell's lap time also decreases slightly over the same sessions.
 
 Conclusion:
 - Both drivers, Hamilton and Russell, demonstrate improvement in lap time from Practice 1 to the Race, with both showing a reduction in lap time over the sessions.
 
-To further analyze the improvement, let's compare the difference in average lap time for each driver between 'Practice_1' and 'Race'. The driver with the highest negative difference signifies the most improvement:
+To further analyze the improvement, let's compare the difference in average lap time for each driver betIen 'Practice_1' and 'Race'. The driver with the highest negative difference signifies the most improvement:
 ```sql fp1_avg_lap_time
 SELECT 
     fa.Driver, 
@@ -559,7 +559,7 @@ JOIN
     GROUP BY Driver) as ra ON fa.Driver = ra.Driver;
 ```
 
-We'll represent this comparison using a horizontal bar chart:
+I'll represent this comparison using a horizontal bar chart:
 <BarChart 
     data={fp1_avg_lap_time}
     x=Driver
@@ -569,7 +569,7 @@ We'll represent this comparison using a horizontal bar chart:
 The bar chart indicates that both Hamilton and Russell have reduced their average lap times from Practice 1 to the Race, with Russell exhibiting a slightly greater improvement.
 
 ### Overall Conclusion
-Based on the analysis, Hamilton demonstrates the most significant improvement from Free Practice 1 (FP1) to the race. Hamilton's speed showed a notable uptrend from Practice 1 to the Race, indicating substantial improvement in speed over the sessions. Furthermore, when comparing the difference in average speed between FP1 and the Race, Hamilton exhibited a significantly higher increase in speed compared to Russell.
+Based on the analysis, Hamilton demonstrates the most significant improvement from Free Practice 1 (FP1) to the race. Hamilton's speed shoId a notable uptrend from Practice 1 to the Race, indicating substantial improvement in speed over the sessions. Furthermore, when comparing the difference in average speed betIen FP1 and the Race, Hamilton exhibited a significantly higher increase in speed compared to Russell.
 
 While both Hamilton and Russell exhibited a reduction in lap time from FP1 to the Race, Hamilton's improvement in speed was more pronounced, making him the driver who improves best overall from FP1 till the race. Therefore, Hamilton emerges as the driver showing the most improvement over the course of the sessions.
 
