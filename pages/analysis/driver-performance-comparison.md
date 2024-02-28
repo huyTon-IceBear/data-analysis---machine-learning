@@ -572,3 +572,6 @@ The bar chart indicates that both Hamilton and Russell have reduced their averag
 Based on the analysis, Hamilton demonstrates the most significant improvement from Free Practice 1 (FP1) to the race. Hamilton's speed showed a notable uptrend from Practice 1 to the Race, indicating substantial improvement in speed over the sessions. Furthermore, when comparing the difference in average speed between FP1 and the Race, Hamilton exhibited a significantly higher increase in speed compared to Russell.
 
 While both Hamilton and Russell exhibited a reduction in lap time from FP1 to the Race, Hamilton's improvement in speed was more pronounced, making him the driver who improves best overall from FP1 till the race. Therefore, Hamilton emerges as the driver showing the most improvement over the course of the sessions.
+
+## Final Conclusion
+Overall, while George Russell exhibits strengths in certain areas such as overtaking and individual lap times, Lewis Hamilton's consistency, scoring ability, and overall race performance establish him as the stronger performer within the Mercedes team.
