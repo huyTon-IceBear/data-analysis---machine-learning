@@ -171,7 +171,26 @@ To determine which driver executed the most overtakes during the race, we analyz
         avg(overtakes_within_race) AS average_overtake_per_race
     FROM ${russell_overtakes}
     ```
-
+- Races in which Lewis Hamilton and George Russell both participated. 
+    - Records of overtakes
+    ```sql overtakes_comparison
+        SELECT 
+            ho.date,
+            ho.overtakes_within_race AS hamilton_overtakes,
+            ro.overtakes_within_race AS russell_overtakes
+        FROM 
+            ${hamilton_overtakes} as ho
+        JOIN 
+            ${russell_overtakes} as ro ON ho.date = ro.date
+    ```
+    - The total number of overtakes for each driver is as follows::
+    ```sql total_overtakes_comparison
+        SELECT 
+            SUM(hamilton_overtakes) AS hamilton_total_overtakes,
+            SUM(russell_overtakes) AS russell_total_overtakes
+        FROM 
+            ${overtakes_comparison}
+    ```
 ### Analysis:
 - Lewis Hamilton's Performance
     <LineChart data={hamilton_overtakes} x=date y=overtakes_within_race >
@@ -185,25 +204,7 @@ To determine which driver executed the most overtakes during the race, we analyz
     </LineChart>
     The line chart showcases George Russell's overtakes within each race over time. Similar to Hamilton, Russell's overtaking performance fluctuates across races.
 
-- Head-to-Head Comparison: The number of overtakes between Lewis Hamilton and George Russell for races they participated in together. 
-    ```sql overtakes_comparison
-    SELECT 
-        ho.date,
-        ho.overtakes_within_race AS hamilton_overtakes,
-        ro.overtakes_within_race AS russell_overtakes
-    FROM 
-        ${hamilton_overtakes} as ho
-    JOIN 
-        ${russell_overtakes} as ro ON ho.date = ro.date
-    ```
-    The total number of overtakes for each driver is as follows::
-    ```sql total_overtakes_comparison
-    SELECT 
-        SUM(hamilton_overtakes) AS hamilton_total_overtakes,
-        SUM(russell_overtakes) AS russell_total_overtakes
-    FROM 
-        ${overtakes_comparison}
-    ```
+- Head-to-Head Performance Comparison
     <LineChart data={overtakes_comparison} x=date y={["hamilton_overtakes","russell_overtakes"]} />
     The line chart compares the number of overtakes between Lewis Hamilton and George Russell for races they participated in together. Variations between the two lines highlight differences in their overtaking performances in specific races.
 

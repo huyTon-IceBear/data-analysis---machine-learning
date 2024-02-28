@@ -62,20 +62,6 @@ select
 from 
     ${lap_time_result}
 ```
-### Reasoning:
-Analyzing the lap time data in detail, it becomes evident that the driver's performance evolves over the course of the weekend. Here's a breakdown:
-
-- Practice Session:
-    Initially, during the early laps (around 30 laps), the driver seems to be acclimatizing to the vehicle, resulting in varying lap times. This phase typically involves adjustments and familiarization with the track and vehicle dynamics.
-- Stable Performance:
-    Subsequently, from approximately laps 40 to 80, the driver demonstrates a stable performance, with lap times consistently below the average. This indicates that the driver has adapted well to the track conditions and optimized their driving techniques, resulting in improved performance.
-- Final Race Session:
-    - Remarkably, during the final race session, the driver delivers an exceptional performance, with most lap times consistently below the average. However, there are a few instances where the lap times deviate from the average, which could be attributed to unforeseen factors such as track conditions or strategic decisions during the race.
-    - It's worth noting that anomalies in data, particularly during the final rounds, may occur due to hot restart moments or other race incidents, which could affect the consistency of lap times.
-
-### Conclusion:
-In conclusion, Lewis Hamilton demonstrates a remarkable improvement throughout the weekend, as evidenced by the consistent decrease in lap times and their ability to maintain performance levels below the average. While there are minor fluctuations, particularly in sector 1 times, sectors 2 and 3 remain relatively consistent with minimal changes observed. This suggests a progressive enhancement in the driver's performance and a strong adaptation to the race conditions over time.
-
 Here are the charts depicting the lap time and sector time trends:
 
 ### Lap Time Chart
@@ -97,6 +83,19 @@ Here are the charts depicting the lap time and sector time trends:
 <LineChart data={lap_time_result} x=index y="Sector3Time">
     <ReferenceLine y={avg_lap_time_result_ms[0].avg_sector_3} label="Average Time in ms"/>
 </LineChart>
+
+### Reasoning:
+Analyzing the lap time data in detail, it becomes evident that the driver's performance evolves over the course of the weekend. Here's a breakdown:
+- Practice Session:
+    Initially, during the early laps (around 30 laps), the driver seems to be acclimatizing to the vehicle, resulting in varying lap times. This phase typically involves adjustments and familiarization with the track and vehicle dynamics.
+- Stable Performance:
+    Subsequently, from approximately laps 40 to 80, the driver demonstrates a stable performance, with lap times consistently below the average. This indicates that the driver has adapted well to the track conditions and optimized their driving techniques, resulting in improved performance.
+- Final Race Session:
+    - Remarkably, during the final race session, the driver delivers an exceptional performance, with most lap times consistently below the average. However, there are a few instances where the lap times deviate from the average, which could be attributed to unforeseen factors such as track conditions or strategic decisions during the race.
+    - It's worth noting that anomalies in data, particularly during the final rounds, may occur due to hot restart moments or other race incidents, which could affect the consistency of lap times.
+
+### Conclusion:
+In conclusion, Lewis Hamilton demonstrates a remarkable improvement throughout the weekend, as evidenced by the consistent decrease in lap times and their ability to maintain performance levels below the average. While there are minor fluctuations, particularly in sector 1 times, sectors 2 and 3 remain relatively consistent with minimal changes observed. This suggests a progressive enhancement in the driver's performance and a strong adaptation to the race conditions over time.
 
 ## Results Per session
 2. How are the results per session during the weekend?
@@ -131,7 +130,11 @@ select
 from 
     ${practice_lap_time_result}
 ```
-Now, let's delve into the performance analysis:
+
+The line chart below visualizes Lewis Hamilton's lap times throughout the practice sessions, with the average lap time indicated by a reference line.
+<LineChart data={practice_lap_time_result} x=index y=LapTime >
+    <ReferenceLine y={avg_practice_lap_time_result_ms[0].avg_lap_time} label="Average Time in ms"/>
+</LineChart>
 
 ### Reasoning:
 - The lap times exhibit a fluctuating trend throughout the practice sessions, indicating varying performance levels.
@@ -141,12 +144,6 @@ Now, let's delve into the performance analysis:
 
 ### Conclusion:
 The analysis of lap times across the practice sessions underscores Lewis Hamilton's dynamic performance trajectory. The progression from higher initial lap times to improved performance reflects the driver's adaptability and commitment to continuous enhancement.
-
-The line chart below visualizes Lewis Hamilton's lap times throughout the practice sessions, with the average lap time indicated by a reference line.
-
-<LineChart data={practice_lap_time_result} x=index y=LapTime >
-    <ReferenceLine y={avg_practice_lap_time_result_ms[0].avg_lap_time} label="Average Time in ms"/>
-</LineChart>
 
 ### Qualifying Sessions:
 To assess the driver's performance during the qualifying sessions, we analyze Lewis Hamilton's lap times. The lap times for the qualifying sessions, along with their average, are as follows:
@@ -178,7 +175,10 @@ from
     ${qualify_lap_time_result}
 ```
 
-Now, let's delve into the performance analysis:
+The line chart below visualizes Lewis Hamilton's lap times throughout the qualifying sessions, with the average lap time indicated by a reference line. 
+<LineChart data={qualify_lap_time_result} x=index y=LapTime >
+    <ReferenceLine y={avg_qualify_lap_time_result_ms[0].avg_lap_time} label="Average Time in ms"/>
+</LineChart>
 
 ### Reasoning: 
 - The lap times in the qualifying sessions exhibit a downward trend, indicating an improvement in performance as the sessions progress towards the final qualifying round.
@@ -188,12 +188,6 @@ Now, let's delve into the performance analysis:
 
 ### Conclusion:
 Lewis Hamilton's progressive improvement throughout the qualifying sessions demonstrates his strategic adaptation and readiness to compete at the highest level. The culmination in a standout performance in the final qualifying session underscores the driver's proficiency and competitive edge.
-
-The line chart below visualizes Lewis Hamilton's lap times throughout the qualifying sessions, with the average lap time indicated by a reference line. 
-
-<LineChart data={qualify_lap_time_result} x=index y=LapTime >
-    <ReferenceLine y={avg_qualify_lap_time_result_ms[0].avg_lap_time} label="Average Time in ms"/>
-</LineChart>
 
 ### Race Session:
 To complete the assessment of Lewis Hamilton's performance during the weekend, we inspect the lap times recorded during the race session. The lap times for the race session, along with their average, are as follows:
@@ -223,7 +217,10 @@ select
 from 
     ${race_lap_time_result}
 ```
-Now, let's proceed with the performance analysis:
+The line chart below visualizes Lewis Hamilton's lap times throughout the race session, with the average lap time indicated by a reference line. This graphical representation provides a clear illustration of the driver's performance trajectory and highlights instances where lap times deviate from the average. 
+<LineChart data={race_lap_time_result} x=index y=LapTime >
+    <ReferenceLine y={avg_race_lap_time_result_ms[0].avg_lap_time} label="Average Time in ms"/>
+</LineChart>
 
 ### Reasoning:
 - Remarkably, during the final race session, Lewis Hamilton delivers an exceptional performance, with most lap times consistently below the average.
@@ -232,12 +229,6 @@ Now, let's proceed with the performance analysis:
 
 ### Conclusion:
 The analysis of lap times during the final race session underscores Lewis Hamilton's ability to maintain a high level of performance under pressure. Despite occasional deviations from the average lap time, the driver consistently demonstrates competitiveness and skill throughout the race. Anomalies in lap times are expected in high-stakes racing scenarios and are often influenced by external factors beyond the driver's control.
-
-The line chart below visualizes Lewis Hamilton's lap times throughout the race session, with the average lap time indicated by a reference line. This graphical representation provides a clear illustration of the driver's performance trajectory and highlights instances where lap times deviate from the average. 
-
-<LineChart data={race_lap_time_result} x=index y=LapTime >
-    <ReferenceLine y={avg_race_lap_time_result_ms[0].avg_lap_time} label="Average Time in ms"/>
-</LineChart>
 
 ## Assessing Pit Stop Consistency
 3. Is the driver (and team) consistent with their pit stop times?
