@@ -2,6 +2,7 @@
 To address the query:
 
 "Will the driver score any points (finish as one of the first 10 drivers) or no points in the upcoming race?"
+
 ## Introduction
 In this analysis, I aim to predict the likelihood of Lewis Hamilton, driver number 44, scoring points in future races using the Naive Bayes algorithm. This prediction is based on historical race data and employs the assumption of independence among the features.
 
