@@ -354,7 +354,7 @@ To implement the KNN algorithm effectively, I need to compute the Euclidean dist
     Limit 10
     ```
 
-- Here, I'm computing the accuracy of the KNN algorithm for different values of K (number of nearest neighbors). Each query calculates the accuracy for a specific value of K by comparing the predicted values with the expected values. The accuracy is computed as the number of correct predictions divided by the total number of predictions. These results are then combined using UNION ALL to create a unified view of accuracy for different K values. Finally, I filter out any accuracy values that are equal to 0, as they do not contribute to the evaluation.
+- Then, I'm evaluating KNN algorithm accuracy across various K values by comparing predicted and expected outcomes, combining results through UNION ALL, and filtering out zero accuracies.
     ```sql k_accuracy_results
     WITH knn_results AS (
         -- Query for k = 3
@@ -453,17 +453,16 @@ To implement the KNN algorithm effectively, I need to compute the Euclidean dist
 - I use a line chart visualizing the accuracy of the KNN algorithm for different values of K is provided below
     <LineChart data={k_accuracy_results} x=k y=accuracy/>
 
-- Finally, I'm selecting the K value with the highest accuracy from the KNN results obtained above. This helps in identifying the optimal K value for the KNN algorithm. 
+- Finally, I'm selecting the K value with the highest accuracy from the KNN results obtained above. This helps in identifying the optimal K value for the KNN algorithm. After all, k = 5 have the highest accuracy is 0.6.
     ```sql best_k_value
     SELECT k, accuracy
     FROM ${k_accuracy_results}
     ORDER BY accuracy DESC
     LIMIT 1
     ```
-After all, k = 5 have the highest accuracy is 0.6.
 
 ### Validate the classification Knn
-In this section, I'm validating the classification by applying the KNN algorithm to the second row of the test data. The Euclidean distance is calculated between the features of the second row in the test data and those of the training data.The KNN algorithm then predicts the compound type based on the nearest neighbors (in this case, the 5 nearest neighbors). Finally, the predicted compound type is compared with the expected compound type, and the accuracy of the prediction is determined.
+I'm validating the KNN classification by applying it to the second row of test data, calculating Euclidean distances between its features and those of training data, predicting the compound type based on the 5 nearest neighbors, and assessing accuracy by comparing predicted and expected compound types.
 
 ```sql knn_result_second_row_test
 WITH knn_results AS (
